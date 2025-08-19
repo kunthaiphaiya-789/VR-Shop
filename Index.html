@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Angkor&family=Noto+Serif+TC:wght@200..900&display=swap" rel="stylesheet">
+    <title>Vannary</title>
+    <!-- Tailwind CSS CDN for easy styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles to ensure the background image covers the whole page */
+        body {
+            font-family: 'Inter',"Odor Mean Chey",serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-image: url('img/1.jpg'); /* Placeholder image */
+            background-size: cover; /* Cover the entire viewport */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Do not repeat the image */
+            min-height: 100vh; /* Ensure it takes full viewport height */
+            display: flex; /* Use flexbox for centering content */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+
+            .odor-mean-chey-regular {
+  font-family: "Odor Mean Chey", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+        /* Styles for the loading indicator */
+        .loading-indicator {
+            display: none; /* Hidden by default */
+            border: 4px solid #040fb1; /* Light grey */
+            border-top: 4px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+
+    <!-- Main container for the login form, centered on the page -->
+    <div id="loginContainer" class="bg-gray-800 bg-opacity-90 p-8 rounded-lg shadow-2xl w-full max-w-sm mx-4 md:mx-auto">
+        <h2 class="text-3xl font-bold text-center mb-6 text-indigo-400">សូមស្វាគមន៍ វណ្ណរី!</h2>
+        <p class="text-center text-gray-300 mb-6">សូមចូលដើម្បីបន្ត។</p>
+
+        <!-- Username input field -->
+        <div class="mb-4">
+            <label for="username" class="block text-gray-300 text-sm font-semibold mb-2">ឈ្មោះអ្នកប្រើប្រាស់:</label>
+            <input type="text" id="username" name="username" class="shadow appearance-none border border-gray-600 rounded-lg w-full py-3 px-4 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-200" placeholder="បញ្ចូលឈ្មោះអ្នកប្រើប្រាស់របស់អ្នក។">
+        </div>
+
+        <!-- Password input field -->
+        <div class="mb-6">
+            <label for="password" class="block text-gray-300 text-sm font-semibold mb-2">ពាក្យសម្ងាត់:</label>
+            <input type="password" id="password" name="password" class="shadow appearance-none border border-gray-600 rounded-lg w-full py-3 px-4 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-200" placeholder="បញ្ចូលពាក្យសម្ងាត់របស់អ្នក។">
+        </div>
+
+        <!-- Message display area -->
+        <div id="message" class="text-center mb-6 text-sm font-medium">
+            <!-- Messages (e.g., error or success) will be displayed here -->
+        </div>
+
+        <!-- Login button -->
+        <button id="loginButton" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center">
+            ចូល
+            <div id="loadingIndicator" class="loading-indicator ml-3"></div>
+        </button>
+    </div>
+
+    <script>
+        // Get references to HTML elements
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const loginButton = document.getElementById('loginButton');
+        const messageDiv = document.getElementById('message');
+        const loginContainer = document.getElementById('loginContainer');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+
+        // Define the correct username and password
+        const CORRECT_USERNAME = 'Vannary';
+        const CORRECT_PASSWORD = '06032024';
+
+        // Function to display messages (error or success)
+        function displayMessage(msg, type) {
+            messageDiv.textContent = msg;
+            messageDiv.className = 'text-center mb-6 text-sm font-medium'; // Reset classes
+            if (type === 'error') {
+                messageDiv.classList.add('text-red-400'); // Red text for errors
+            } else if (type === 'success') {
+                messageDiv.classList.add('text-green-400'); // Green text for success
+            }
+        }
+
+        // Function to simulate navigation to the next page
+        function navigateToNextPage() {
+            // Clear the login form content
+            loginContainer.innerHTML = '';
+            // Display a welcome message and a next page button
+            loginContainer.classList.remove('bg-gray-800', 'bg-opacity-90', 'p-8', 'shadow-2xl', 'max-w-sm');
+            loginContainer.classList.add('flex', 'flex-col', 'items-center', 'justify-center', 'text-center', 'min-h-screen', 'bg-transparent'); // Adjust styling for the new content
+
+            const nextContent = `
+                <div class="bg-gray-800 bg-opacity-90 p-8 rounded-lg shadow-2xl w-full max-w-lg mx-auto md:mx-auto">
+                    <h2 class="text-4xl font-extrabold text-center mb-6 text-green-400 animate-pulse">សូមស្វាគមន៍ ${CORRECT_USERNAME}!</h2>
+                    <p class="text-xl text-gray-200 mb-8">អ្នកបានចូលដោយជោគជ័យ។</p>
+                    <p class="text-gray-400 mb-10">នេះជាផ្ទាំងគ្រប់គ្រងផ្ទាល់ខ្លួនរបស់អ្នក។ រុករកលទ្ធភាពថ្មីៗ!</p>
+                    <button id="goToDashboardButton" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline transition duration-300 ease-in-out transform hover:scale-105 shadow-lg">
+                        ចូលទៅផ្ទាំងគ្រប់គ្រង
+                    </button>
+                </div>
+            `;
+            loginContainer.innerHTML = nextContent;
+
+            // Add event listener to the new button if needed
+            document.getElementById('goToDashboardButton').addEventListener('click', () => {
+                // Navigate to VR2.html
+                window.location.href = 'VR2.html';
+            });
+        }
+
+        // Event listener for the login button click
+        loginButton.addEventListener('click', () => {
+            const enteredUsername = usernameInput.value.trim(); // Get username and remove whitespace
+            const enteredPassword = passwordInput.value.trim(); // Get password and remove whitespace
+
+            // Show loading indicator and disable button
+            loadingIndicator.style.display = 'block';
+            loginButton.disabled = true;
+            displayMessage('កំពុងចូល...', 'info');
+
+            // Simulate an API call delay for demonstration purposes
+            setTimeout(() => {
+                if (enteredUsername === CORRECT_USERNAME && enteredPassword === CORRECT_PASSWORD) {
+                    displayMessage('ចូលបានជោគជ័យ! កំពុងបញ្ជូនបន្ត...', 'success');
+                    // Hide loading indicator
+                    loadingIndicator.style.display = 'none';
+                    // Simulate navigation to the next page after a short delay
+                    setTimeout(navigateToNextPage, 1000);
+                } else {
+                    displayMessage('ឈ្មោះអ្នកប្រើប្រាស់ ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ។ សូមព្យាយាមម្តងទៀត។', 'error');
+                    // Hide loading indicator and re-enable button
+                    loadingIndicator.style.display = 'none';
+                    loginButton.disabled = false;
+                }
+            }, 2000); // 2-second delay
+        });
+
+        // Optional: Allow pressing Enter key to log in
+        usernameInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                loginButton.click();
+            }
+        });
+
+        passwordInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                loginButton.click();
+            }
+        });
+    </script>
+</body>
+</html>
